@@ -1,28 +1,31 @@
-function updateCarPrice() {
-    $('.card-item').each(function() {
-        let rowBottomText = $(this).find('.row-bottom').text().trim();
+function updateCarPrices() {
+    $('.card-item').each(function () {
         let carPrice = $(this).find('.car-price');
+        let rowBottomText = $(this).find('.row-bottom').text().trim();
 
+        // Lưu giá gốc nếu chưa có
+        if (!carPrice.attr('data-original-price')) {
+            carPrice.attr('data-original-price', carPrice.html().trim());
+        }
+
+        let originalPrice = carPrice.attr('data-original-price');
+
+        // Kiểm tra điều kiện
         if (rowBottomText.includes('Đã bán')) {
             carPrice.html('Đã bán');
+        } else {
+            carPrice.html(originalPrice); // Khôi phục giá gốc
         }
     });
 }
 
-// Theo dõi danh sách xe trong ".list-product" sau khi AJAX tải xong
-const targetNode = document.querySelector('.list-product');
+// Khi danh sách xe thay đổi (AJAX/Pagination), cập nhật lại giá xe
+let observer = new MutationObserver(function (mutations) {
+    updateCarPrices();
+});
 
-if (targetNode) {
-    const observer = new MutationObserver((mutations, obs) => {
-        // Kiểm tra nếu danh sách xe có thay đổi thì cập nhật giá xe
-        let hasNewCars = mutations.some(mutation => mutation.addedNodes.length > 0);
-        if (hasNewCars) {
-            setTimeout(updateCarPrice, 500); // Chờ 0.5s để đảm bảo danh sách tải xong
-        }
-    });
+// Theo dõi thay đổi trong .list-product (nơi chứa danh sách xe)
+observer.observe(document.querySelector('.list-product'), { childList: true, subtree: true });
 
-    observer.observe(targetNode, { childList: true, subtree: true });
-}
-
-// Chạy ngay khi trang vừa load
-setTimeout(updateCarPrice, 1000); // Chờ 1s cho chắc chắn danh sách xe đã tải
+// Lần đầu chạy script
+updateCarPrices();
