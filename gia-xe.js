@@ -31,9 +31,11 @@ function handlePagination() {
 // Gọi lần đầu khi trang tải
 updateCarPrice();
 
-// Theo dõi sự thay đổi của danh sách xe khi chuyển trang (pagination)
-const observer = new MutationObserver(handlePagination);
-const targetNode = document.querySelector('.list-container'); // Cập nhật selector nếu cần
-if (targetNode) {
-    observer.observe(targetNode, { childList: true, subtree: true });
+// Kiểm tra nếu observer đã tồn tại trước khi tạo mới
+if (typeof window._carPriceObserver === 'undefined') {
+    window._carPriceObserver = new MutationObserver(handlePagination);
+    const targetNode = document.querySelector('.list-container'); // Cập nhật selector nếu cần
+    if (targetNode) {
+        window._carPriceObserver.observe(targetNode, { childList: true, subtree: true });
+    }
 }
