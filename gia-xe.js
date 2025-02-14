@@ -9,12 +9,20 @@ function updateCarPrice() {
     });
 }
 
-// Chờ danh sách xe thay đổi để chạy lại updateCarPrice()
-const targetNode = document.querySelector('.list-product'); // Chọn phần tử chứa danh sách xe
+// Theo dõi danh sách xe trong ".list-product" sau khi AJAX tải xong
+const targetNode = document.querySelector('.list-product');
+
 if (targetNode) {
-    const observer = new MutationObserver(updateCarPrice);
+    const observer = new MutationObserver((mutations, obs) => {
+        // Kiểm tra nếu danh sách xe có thay đổi thì cập nhật giá xe
+        let hasNewCars = mutations.some(mutation => mutation.addedNodes.length > 0);
+        if (hasNewCars) {
+            setTimeout(updateCarPrice, 500); // Chờ 0.5s để đảm bảo danh sách tải xong
+        }
+    });
+
     observer.observe(targetNode, { childList: true, subtree: true });
 }
 
-// Gọi hàm cập nhật ngay khi trang vừa tải
-updateCarPrice();
+// Chạy ngay khi trang vừa load
+setTimeout(updateCarPrice, 1000); // Chờ 1s cho chắc chắn danh sách xe đã tải
