@@ -1,32 +1,32 @@
-function createCallIcons() {
-    var container = document.createElement("div");
-    container.id = "interactivebutton";
-    container.style.position = "fixed";
-    container.style.bottom = "20px";
-    container.style.left = "20px";
-    container.style.zIndex = "9999999999";
-    document.body.appendChild(container);
-
-    var icons = [
-        { url: "tel:0123456789", img: "https://yourimage1.com/icon1.png" },
-        { url: "tel:0987654321", img: "https://yourimage2.com/icon2.png" }
+(function() {
+    var phoneNumbers = [
+        { number: '0901886997', imageId: '1w9Jj_wfbpDAOa8tQMAAYUV-DShvOQbLB' },
+        { number: '0901886199', imageId: '1BWDj9N1k8eVvkVGVYKKbWetPG6VkSUYz' }
     ];
 
-    icons.forEach(function(icon) {
-        var link = document.createElement("a");
-        link.href = icon.url;
-        link.target = "_blank";
+    var container = document.createElement('div');
+    container.id = 'interactivebutton';
+    container.style.position = 'fixed';
+    container.style.bottom = '20px';
+    container.style.left = '20px';
+    container.style.width = '120px';
+    container.style.zIndex = '9999999999';
 
-        var img = document.createElement("img");
-        img.src = icon.img;
-        img.style.width = "120px";
-        img.style.height = "auto";
-        img.style.margin = "5px";
-        img.style.borderRadius = "10px";
-        
-        link.appendChild(img);
+    phoneNumbers.forEach(function(phone) {
+        var link = document.createElement('a');
+        link.href = 'tel:' + phone.number;
+        link.style.display = 'block';
+        link.style.marginBottom = '10px';
+
+        var icon = document.createElement('div');
+        icon.style.width = '120px';
+        icon.style.height = 'auto';
+        icon.style.background = `url(https://drive.google.com/thumbnail?id=${phone.imageId}) no-repeat center center`;
+        icon.style.backgroundSize = 'contain';
+
+        link.appendChild(icon);
         container.appendChild(link);
     });
-}
 
-document.addEventListener("DOMContentLoaded", createCallIcons);
+    document.body.appendChild(container);
+})();
