@@ -1,44 +1,32 @@
-function createCallButtons() {
-    const phoneNumbers = [
-        { number: '0901886997', imageId: '1w9Jj_wfbpDAOa8tQMAAYUV-DShvOQbLB' },
-        { number: '0901886199', imageId: '1BWDj9N1k8eVvkVGVYKKbWetPG6VkSUYz' }
+function createCallIcons() {
+    var container = document.createElement("div");
+    container.id = "interactivebutton";
+    container.style.position = "fixed";
+    container.style.bottom = "20px";
+    container.style.left = "20px";
+    container.style.zIndex = "9999999999";
+    document.body.appendChild(container);
+
+    var icons = [
+        { url: "tel:0123456789", img: "https://yourimage1.com/icon1.png" },
+        { url: "tel:0987654321", img: "https://yourimage2.com/icon2.png" }
     ];
-    
-    const buttonContainer = document.createElement('div');
-    buttonContainer.id = 'interactivebutton';
-    buttonContainer.style.position = 'fixed';
-    buttonContainer.style.bottom = '20px';
-    buttonContainer.style.left = '20px';
-    buttonContainer.style.zIndex = '9999999999';
 
-    phoneNumbers.forEach(({ number, imageId }) => {
-        const callButton = document.createElement('a');
-        callButton.href = `tel:${number}`;
-        callButton.classList.add(imageId);
+    icons.forEach(function(icon) {
+        var link = document.createElement("a");
+        link.href = icon.url;
+        link.target = "_blank";
+
+        var img = document.createElement("img");
+        img.src = icon.img;
+        img.style.width = "120px";
+        img.style.height = "auto";
+        img.style.margin = "5px";
+        img.style.borderRadius = "10px";
         
-        const buttonDiv = document.createElement('div');
-        buttonDiv.style.width = '120px';
-        buttonDiv.style.height = 'auto';
-        buttonDiv.style.padding = '1px';
-        buttonDiv.style.textAlign = 'center';
-        buttonDiv.style.margin = '5px';
-        buttonDiv.style.borderRadius = '4px';
-        buttonDiv.style.background = `url(https://drive.google.com/thumbnail?id=${imageId}) no-repeat center center / contain`;
-        buttonDiv.style.border = '1px solid transparent';
-        buttonDiv.style.transition = 'border 0.3s';
-
-        buttonDiv.addEventListener('mouseenter', () => {
-            buttonDiv.style.border = '1px solid #888';
-        });
-        buttonDiv.addEventListener('mouseleave', () => {
-            buttonDiv.style.border = '1px solid transparent';
-        });
-
-        callButton.appendChild(buttonDiv);
-        buttonContainer.appendChild(callButton);
+        link.appendChild(img);
+        container.appendChild(link);
     });
-
-    document.body.appendChild(buttonContainer);
 }
 
-document.addEventListener("DOMContentLoaded", createCallButtons);
+document.addEventListener("DOMContentLoaded", createCallIcons);
